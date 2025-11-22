@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explora el Mundo Digital: Hardware, Software y Redes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --primary: #3b82f6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --gray: #64748b;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    header {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: white;
+      text-align: center;
+      padding: 5rem 1rem;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+    header h1 {
+      font-size: 4.2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    header p { font-size: 1.6rem; opacity: 0.95; margin-bottom: 2rem; }
+    .header-menu {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .header-menu a {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 1rem 2.2rem;
+      border-radius: 50px;
+      background: rgba(255,255,255,0.1);
+      transition: all 0.3s;
+    }
+    .header-menu a:hover { background: var(--primary); transform: translateY(-4px); }
+
+    section { padding: 5rem 2rem; max-width: 1400px; margin: 0 auto; }
+    h2 {
+      text-align: center;
+      font-size: 3.2rem;
+      font-weight: 700;
+      margin-bottom: 4rem;
+      color: var(--text);
+    }
+    h2::after {
+      content: '';
+      display: block;
+      width: 140px;
+      height: 6px;
+      background: var(--primary);
+      margin: 1.2rem auto;
+      border-radius: 3px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 2.8rem;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 28px;
+      padding: 3.2rem 2rem;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+    .card:hover {
+      transform: translateY(-20px) scale(1.04);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+    }
+    .card svg {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .card h3 {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(12px);
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 32px;
+      max-width: 900px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    }
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary), #2563eb);
+      color: white;
+      padding: 2.5rem;
+      text-align: center;
+    }
+    .modal-header h2 { font-size: 2.6rem; margin: 0; }
+    .modal-body {
+      padding: 3rem;
+      text-align: center;
+    }
+    .modal-body svg {
+      width: 250px;
+      height: 250px;
+      margin: 2rem 0;
+    }
+    .modal-body p {
+      font-size: 1.3rem;
+      margin: 1.2rem 0;
+    }
+    .modal-body strong { color: var(--primary); font-size: 1.4rem; }
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 4rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Juego */
+    #juego {
+      background: white;
+      border-radius: 32px;
+      padding: 5rem 3rem;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.15);
+      text-align: center;
+      margin: 4rem auto;
+      max-width: 1100px;
+    }
+    #icono-juego {
+      width: 240px;
+      height: 240px;
+      margin: 2rem auto;
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 50px rgba(59,130,246,0.35);
+    }
+    #icono-juego svg {
+      width: 180px;
+      height: 180px;
+    }
+    .opciones {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+    .opcion {
+      padding: 2rem;
+      background: #f1f5f9;
+      border-radius: 24px;
+      font-weight: 700;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: all 0.4s;
+      border: 4px solid transparent;
+    }
+    .opcion:hover { background: var(--primary); color: white; transform: translateY(-10px); }
+    .opcion.correcto { background: var(--success) !important; color: white; }
+    .opcion.incorrecto { background: var(--danger) !important; color: white; }
+
+    #resultado-juego {
+      margin-top: 3rem;
+      font-size: 2.2rem;
+      font-weight: 700;
+    }
+
+    /* Quiz */
+    #quiz {
+      background: white;
+      border-radius: 32px;
+      padding: 5rem 3rem;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.15);
+      text-align: center;
+      margin: 4rem auto;
+      max-width: 1100px;
+      display: none;
+    }
+    #quiz-start {
+      display: block;
+      margin-bottom: 3rem;
+    }
+    #quiz-start input {
+      padding: 1rem;
+      font-size: 1.2rem;
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      margin-right: 1rem;
+      width: 300px;
+    }
+    #quiz-start button {
+      padding: 1rem 2rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .quiz-question {
+      margin-bottom: 2rem;
+    }
+    .quiz-question p {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .quiz-option {
+      display: block;
+      padding: 1rem;
+      background: #f1f5f9;
+      border-radius: 12px;
+      margin: 0.5rem 0;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .quiz-option:hover { background: var(--primary); color: white; }
+    #quiz-result {
+      display: none;
+      font-size: 2rem;
+      margin-top: 2rem;
+    }
+    #quiz-result svg {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 4rem;
+      margin-top: 6rem;
+      font-size: 1.3rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Explora el Mundo Digital</h1>
+    <p>Hardware, Software y Redes con Prof. Juan Barranco</p>
+    <div class="header-menu">
+      <a href="#hardware">Hardware</a>
+      <a href="#software">Software</a>
+      <a href="#redes">Redes</a>
+      <a href="#juego">Juego</a>
+      <a href="#quiz">Quiz</a>
+    </div>
+  </header>
+
+  <!-- Hardware -->
+  <section id="hardware">
+    <h2>Componentes de Hardware</h2>
+    <div class="cards">
+      <div class="card" data-name="CPU"><svg viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" rx="10" fill="none" stroke="#3b82f6" stroke-width="6"/><path d="M35,10 L35,30 M65,10 L65,30 M35,70 L35,90 M65,70 L65,90 M10,35 L30,35 M70,35 L90,35 M10,65 L30,65 M70,65 L90,65" stroke="#3b82f6" stroke-width="6"/><rect x="40" y="40" width="20" height="20" fill="#f59e0b"/></svg><h3>CPU</h3></div>
+      <div class="card" data-name="RAM"><svg viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="8" fill="none" stroke="#3b82f6" stroke-width="6"/><rect x="30" y="30" width="10" height="40" fill="#10b981"/><rect x="45" y="30" width="10" height="40" fill="#10b981"/><rect x="60" y="30" width="10" height="40" fill="#10b981"/></svg><h3>Memoria RAM</h3></div>
+      <div class="card" data-name="Disco"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="35" fill="none" stroke="#3b82f6" stroke-width="8"/><circle cx="50" cy="50" r="12" fill="#ef4444"/><rect x="15" y="15" width="70" height="70" rx="10" fill="none" stroke="#3b82f6" stroke-width="6"/></svg><h3>Disco / SSD</h3></div>
+      <div class="card" data-name="Teclado"><svg viewBox="0 0 100 100"><rect x="15" y="25" width="70" height="50" rx="10" fill="none" stroke="#3b82f6" stroke-width="6"/><rect x="25" y="35" width="12" height="12" fill="#64748b"/><rect x="45" y="35" width="12" height="12" fill="#64748b"/><rect x="65" y="35" width="12" height="12" fill="#64748b"/><rect x="25" y="55" width="50" height="12" fill="#64748b"/></svg><h3>Teclado</h3></div>
+      <div class="card" data-name="Monitor"><svg viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="45" rx="8" fill="none" stroke="#3b82f6" stroke-width="7"/><path d="M35,65 L65,65 L60,85 L40,85 Z" fill="none" stroke="#3b82f6" stroke-width="7"/><rect x="25" y="25" width="50" height="35" fill="#93c5fd"/></svg><h3>Monitor</h3></div>
+    </div>
+  </section>
+
+  <!-- Software -->
+  <section id="software">
+    <h2>Software</h2>
+    <div class="cards">
+      <div class="card" data-name="Windows"><svg viewBox="0 0 100 100"><path d="M25,20 L45,20 L45,45 L25,45 Z" fill="#ef4444"/><path d="M55,20 L75,20 L75,45 L55,45 Z" fill="#f59e0b"/><path d="M25,55 L45,55 L45,80 L25,80 Z" fill="#10b981"/><path d="M55,55 L75,55 L75,80 L55,80 Z" fill="#3b82f6"/></svg><h3>Windows</h3></div>
+      <div class="card" data-name="Linux"><svg viewBox="0 0 100 100"><path d="M50,20 C40,25 35,35 35,50 C35,65 40,75 50,80 C60,75 65,65 65,50 C65,35 60,25 50,20 Z" fill="#000000"/><path d="M45,40 C47,38 53,38 55,40" fill="#ffffff"/><circle cx="42" cy="35" r="3" fill="#ffffff"/><circle cx="58" cy="35" r="3" fill="#ffffff"/><path d="M50,55 L55,60 M50,55 L45,60" stroke="#ffffff" stroke-width="4"/><path d="M40,70 L60,70 L50,85 Z" fill="#f59e0b"/></svg><h3>Linux</h3></div>
+      <div class="card" data-name="Word"><svg viewBox="0 0 100 100"><rect x="25" y="20" width="50" height="60" rx="8" fill="none" stroke="#3b82f6" stroke-width="7"/><path d="M35,35 L65,35 L60,55 L40,55 Z" fill="#93c5fd"/><circle cx="50" cy="50" r="5" fill="#ef4444"/></svg><h3>Microsoft Word</h3></div>
+      <div class="card" data-name="Navegador"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#ef4444"/><circle cx="50" cy="50" r="35" fill="#f59e0b"/><circle cx="50" cy="50" r="30" fill="#10b981"/><circle cx="50" cy="50" r="25" fill="#3b82f6"/><circle cx="50" cy="50" r="20" fill="#93c5fd"/><path d="M50,30 L70,50 L50,70 L30,50 Z" fill="#ffffff"/></svg><h3>Navegador Web</h3></div>
+    </div>
+  </section>
+
+  <!-- Redes de Computación -->
+  <section id="redes">
+    <h2>Redes de Computación</h2>
+    <div class="cards">
+      <div class="card" data-name="Router"><svg viewBox="0 0 100 100"><rect x="20" y="30" width="60" height="40" rx="10" fill="none" stroke="#3b82f6" stroke-width="7"/><circle cx="35" cy="50" r="6" fill="#93c5fd"/><circle cx="50" cy="50" r="6" fill="#93c5fd"/><circle cx="65" cy="50" r="6" fill="#93c5fd"/><path d="M30,15 L30,30 M50,10 L50,30 M70,15 L70,30" stroke="#ef4444" stroke-width="6"/><path d="M50,80 A30,30 0 0,1 20,50 A30,30 0 0,1 50,20" fill="none" stroke="#10b981" stroke-width="4" stroke-dasharray="5,5"/></svg><h3>Router</h3></div>
+      <div class="card" data-name="Switch"><svg viewBox="0 0 100 100"><rect x="15" y="25" width="70" height="50" rx="10" fill="none" stroke="#3b82f6" stroke-width="7"/><rect x="25" y="35" width="10" height="10" fill="#f59e0b"/><rect x="40" y="35" width="10" height="10" fill="#f59e0b"/><rect x="55" y="35" width="10" height="10" fill="#f59e0b"/><rect x="70" y="35" width="10" height="10" fill="#f59e0b"/><path d="M20,60 L80,60" stroke="#10b981" stroke-width="4"/><circle cx="50" cy="60" r="4" fill="#ef4444"/></svg><h3>Switch</h3></div>
+      <div class="card" data-name="Cable"><svg viewBox="0 0 100 100"><path d="M20,50 Q40,30 60,50 Q80,30 100,50" fill="none" stroke="#10b981" stroke-width="12" stroke-linecap="round"/><circle cx="20" cy="50" r="8" fill="#3b82f6"/><circle cx="100" cy="50" r="8" fill="#3b82f6"/><path d="M20,50 L100,50" fill="none" stroke="#ef4444" stroke-width="4" stroke-dasharray="5,5"/><rect x="45" y="45" width="10" height="10" fill="#f59e0b"/></svg><h3>Cable UTP</h3></div>
+      <div class="card" data-name="AccessPoint"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="none" stroke="#3b82f6" stroke-width="8"/><path d="M50,20 L50,80 M20,50 L80,50" stroke="#ef4444" stroke-width="6"/><circle cx="50" cy="50" r="10" fill="#93c5fd"/><path d="M50,10 A40,40 0 0,1 90,50 A40,40 0 0,1 50,90 A40,40 0 0,1 10,50 A40,40 0 0,1 50,10" fill="none" stroke="#10b981" stroke-width="4"/><path d="M50,5 A45,45 0 0,1 95,50 A45,45 0 0,1 50,95 A45,45 0 0,1 5,50 A45,45 0 0,1 50,5" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="5,5"/><circle cx="50" cy="50" r="5" fill="#ef4444"/></svg><h3>Access Point WiFi</h3></div>
+      <div class="card" data-name="Servidor"><svg viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="10" fill="none" stroke="#3b82f6" stroke-width="8"/><rect x="25" y="30" width="50" height="8" fill="#f59e0b"/><rect x="25" y="45" width="50" height="8" fill="#f59e0b"/><rect x="25" y="60" width="50" height="8" fill="#f59e0b"/><circle cx="78" cy="78" r="6" fill="#ef4444"/><path d="M40,85 L60,85" stroke="#10b981" stroke-width="5"/><rect x="30" y="70" width="40" height="5" fill="#93c5fd"/></svg><h3>Servidor</h3></div>
+    </div>
+  </section>
+
+  <!-- Juego -->
+  <section id="juego">
+    <h2>Juego: ¿Qué componente es este?</h2>
+    <p>Incluye Hardware, Software y Redes</p>
+    <div id="icono-juego"></div>
+    <div class="opciones" id="opciones"></div>
+    <div id="resultado-juego"></div>
+  </section>
+
+  <!-- Quiz -->
+  <section id="quiz">
+    <h2>Quiz Interactivo</h2>
+    <div id="quiz-start">
+      <input type="text" id="quiz-name" placeholder="Ingresa tu nombre">
+      <button onclick="startQuiz()">Comenzar Quiz</button>
+    </div>
+    <div id="quiz-questions" style="display:none;"></div>
+    <div id="quiz-result"></div>
+  </section>
+
+  <footer>
+    <p>Prof. Juan Barranco | Hardware, Software y Redes de Computación</p>
+    <p>¡El futuro es digital y tú ya estás dentro!</p>
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">×</span>
+        <h2 id="modal-titulo">Componente</h2>
+      </div>
+      <div class="modal-body">
+        <div id="modal-icon"></div>
+        <p><strong>¿Qué es?</strong> <span id="modal-definicion"></span></p>
+        <p><strong>¿Para qué sirve?</strong> <span id="modal-funcion"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const componentes = {
+      CPU: { icono: '<svg viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" rx="10" fill="none" stroke="#3b82f6" stroke-width="6"/><path d="M35,10 L35,30 M65,10 L65,30 M35,70 L35,90 M65,70 L65,90 M10,35 L30,35 M70,35 L90,35 M10,65 L30,65 M70,65 L90,65" stroke="#3b82f6" stroke-width="6"/><rect x="40" y="40" width="20" height="20" fill="#f59e0b"/><circle cx="50" cy="50" r="5" fill="#ef4444"/></svg>', titulo: "CPU - Procesador", definicion: "La Unidad Central de Procesamiento (CPU) es el componente principal del computador responsable de interpretar y ejecutar la mayoría de las instrucciones. Actúa como el 'cerebro' del sistema, manejando operaciones aritméticas, lógicas y de control.", funcion: "Procesa datos a alta velocidad, ejecuta programas, coordina el funcionamiento de otros componentes y determina el rendimiento general del equipo. Un CPU con más núcleos y mayor frecuencia es ideal para tareas intensivas como edición de video o gaming." },
+      RAM: { icono: '<svg viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="8" fill="none" stroke="#3b82f6" stroke-width="6"/><rect x="30" y="30" width="10" height="40" fill="#10b981"/><rect x="45" y="30" width="10" height="40" fill="#10b981"/><rect x="60" y="30" width="10" height="40" fill="#10b981"/><path d="M25,80 L75,80" stroke="#f59e0b" stroke-width="4"/></svg>', titulo: "Memoria RAM", definicion: "La Memoria de Acceso Aleatorio (RAM) es un tipo de memoria volátil que almacena temporalmente los datos y programas que el CPU necesita acceder rápidamente mientras el computador está encendido.", funcion: "Permite la multitarea eficiente, acelera el lanzamiento de aplicaciones y mejora el rendimiento general. Cuanta más RAM (e.g., 16GB o más), mejor para editar fotos, videos o correr múltiples programas simultáneamente. Se pierde al apagar el equipo." },
+      Disco: { icono: '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="35" fill="none" stroke="#3b82f6" stroke-width="8"/><circle cx="50" cy="50" r="12" fill="#ef4444"/><rect x="15" y="15" width="70" height="70" rx="10" fill="none" stroke="#3b82f6" stroke-width="6"/><path d="M50,25 A25,25 0 0,1 75,50 A25,25 0 0,1 50,75" fill="none" stroke="#10b981" stroke-width="4"/></svg>', titulo: "Disco Duro / SSD", definicion: "El Disco Duro (HDD) o Unidad de Estado Sólido (SSD) es el dispositivo de almacenamiento principal que guarda datos de forma permanente, incluso cuando el computador está apagado.", funcion: "Almacena el sistema operativo, programas, archivos personales y datos. Los SSD son más rápidos y duraderos que los HDD, mejorando el arranque y carga de aplicaciones. Capacidad típica: 256GB a varios TB." },
+      Teclado: { icono: '<svg viewBox="0 0 100 100"><rect x="15" y="25" width="70" height="50" rx="10" fill="none" stroke="#3b82f6" stroke-width="6"/><rect x="25" y="35" width="12" height="12" fill="#64748b"/><rect x="45" y="35" width="12" height="12" fill="#64748b"/><rect x="65" y="35" width="12" height="12" fill="#64748b"/><rect x="25" y="55" width="50" height="12" fill="#64748b"/><circle cx="50" cy="45" r="4" fill="#f59e0b"/></svg>', titulo: "Teclado", definicion: "El teclado es un dispositivo periférico de entrada que consta de teclas alfanuméricas, numéricas y especiales para introducir datos y comandos al computador.", funcion: "Facilita la interacción humana con la máquina, permitiendo escribir textos, navegar y ejecutar atajos. Tipos: mecánicos (para gaming) o de membrana (estándar). Esencial para productividad y programación." },
+      Monitor: { icono: '<svg viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="45" rx="8" fill="none" stroke="#3b82f6" stroke-width="7"/><path d="M35,65 L65,65 L60,85 L40,85 Z" fill="none" stroke="#3b82f6" stroke-width="7"/><rect x="25" y="25" width="50" height="35" fill="#93c5fd"/><path d="M30,30 L70,60 M70,30 L30,60" stroke="#ef4444" stroke-width="3"/></svg>', titulo: "Monitor", definicion: "El monitor es un dispositivo de salida que muestra visualmente la información procesada por el computador en forma de texto, imágenes y videos.", funcion: "Proporciona interfaz gráfica para el usuario. Características clave: resolución (e.g., 4K), tasa de refresco (para gaming) y tamaño (24-32 pulgadas típicas). Mejora la experiencia en diseño, video y trabajo diario." },
+      Windows: { icono: '<svg viewBox="0 0 100 100"><path d="M25,20 L45,20 L45,45 L25,45 Z" fill="#ef4444"/><path d="M55,20 L75,20 L75,45 L55,45 Z" fill="#f59e0b"/><path d="M25,55 L45,55 L45,80 L25,80 Z" fill="#10b981"/><path d="M55,55 L75,55 L75,80 L55,80 Z" fill="#3b82f6"/></svg>', titulo: "Windows", definicion: "Windows es un sistema operativo desarrollado por Microsoft, el más utilizado en computadoras personales del mundo, con interfaz gráfica intuitiva y compatibilidad amplia.", funcion: "Gestiona recursos del hardware, ejecuta aplicaciones, proporciona seguridad y actualizaciones. Versiones: Windows 11 con IA integrada. Ideal para usuarios domésticos, oficinas y gaming." },
+      Linux: { icono: '<svg viewBox="0 0 100 100"><path d="M50,20 C40,25 35,35 35,50 C35,65 40,75 50,80 C60,75 65,65 65,50 C65,35 60,25 50,20 Z" fill="#000000"/><path d="M45,40 C47,38 53,38 55,40" fill="#ffffff"/><circle cx="42" cy="35" r="3" fill="#ffffff"/><circle cx="58" cy="35" r="3" fill="#ffffff"/><path d="M50,55 L55,60 M50,55 L45,60" stroke="#ffffff" stroke-width="4"/><path d="M40,70 L60,70 L50,85 Z" fill="#f59e0b"/><path d="M35,80 L65,80" stroke="#ef4444" stroke-width="3"/></svg>', titulo: "Linux", definicion: "Linux es un sistema operativo de código abierto, gratuito y altamente personalizable, basado en Unix, utilizado en servidores, dispositivos embebidos y computadoras personales.", funcion: "Ofrece estabilidad, seguridad avanzada y eficiencia. Distribuciones populares: Ubuntu, Fedora. Perfecto para desarrollo, servidores web y usuarios que buscan control total sin costos de licencia." },
+      Word: { icono: '<svg viewBox="0 0 100 100"><rect x="25" y="20" width="50" height="60" rx="8" fill="none" stroke="#3b82f6" stroke-width="7"/><path d="M35,35 L65,35 L60,55 L40,55 Z" fill="#93c5fd"/><circle cx="50" cy="50" r="5" fill="#ef4444"/><path d="M35,60 L65,60" stroke="#10b981" stroke-width="4"/></svg>', titulo: "Microsoft Word", definicion: "Microsoft Word es un procesador de textos parte de la suite Office, diseñado para crear, editar y formatear documentos con herramientas avanzadas de edición.", funcion: "Facilita la creación de informes, cartas, currículos con plantillas, corrección ortográfica y colaboración en tiempo real. Integrado con OneDrive para trabajo en equipo y compatibilidad multi-plataforma." },
+      Navegador: { icono: '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#ef4444"/><circle cx="50" cy="50" r="35" fill="#f59e0b"/><circle cx="50" cy="50" r="30" fill="#10b981"/><circle cx="50" cy="50" r="25" fill="#3b82f6"/><circle cx="50" cy="50" r="20" fill="#93c5fd"/><path d="M50,30 L70,50 L50,70 L30,50 Z" fill="#ffffff"/></svg>', titulo: "Navegador Web", definicion: "Un navegador web es un software que permite acceder a páginas de internet, interpretar HTML, CSS y JavaScript para mostrar contenido multimedia.", funcion: "Ejemplos: Google Chrome, Firefox. Sirve para buscar información, ver videos, compras en línea y extensiones para productividad. Optimizado para velocidad, seguridad y privacidad." },
+      Router: { icono: '<svg viewBox="0 0 100 100"><rect x="20" y="30" width="60" height="40" rx="10" fill="none" stroke="#3b82f6" stroke-width="7"/><circle cx="35" cy="50" r="6" fill="#93c5fd"/><circle cx="50" cy="50" r="6" fill="#93c5fd"/><circle cx="65" cy="50" r="6" fill="#93c5fd"/><path d="M30,15 L30,30 M50,10 L50,30 M70,15 L70,30" stroke="#ef4444" stroke-width="6"/><path d="M50,80 A30,30 0 0,1 20,50 A30,30 0 0,1 50,20" fill="none" stroke="#10b981" stroke-width="4" stroke-dasharray="5,5"/><circle cx="50" cy="20" r="4" fill="#f59e0b"/></svg>', titulo: "Router", definicion: "El router es un dispositivo de red que dirige el tráfico entre diferentes redes, como tu red local (LAN) e internet (WAN), asignando direcciones IP.", funcion: "Proporciona WiFi, conecta múltiples dispositivos, incluye firewall para seguridad y permite configuración de redes domésticas o empresariales. Ejemplos: TP-Link, Netgear." },
+      Switch: { icono: '<svg viewBox="0 0 100 100"><rect x="15" y="25" width="70" height="50" rx="10" fill="none" stroke="#3b82f6" stroke-width="7"/><rect x="25" y="35" width="10" height="10" fill="#f59e0b"/><rect x="40" y="35" width="10" height="10" fill="#f59e0b"/><rect x="55" y="35" width="10" height="10" fill="#f59e0b"/><rect x="70" y="35" width="10" height="10" fill="#f59e0b"/><path d="M20,60 L80,60" stroke="#10b981" stroke-width="4"/><circle cx="50" cy="60" r="4" fill="#ef4444"/><path d="M25,65 L75,65" stroke="#93c5fd" stroke-width="3"/></svg>', titulo: "Switch", definicion: "El switch es un dispositivo que conecta múltiples dispositivos en una red local (LAN), permitiendo la comunicación eficiente mediante puertos Ethernet.", funcion: "Mejora el rendimiento de la red al enrutar datos solo al destinatario correcto. Tipos: managed (configurables) y unmanaged. Esencial en oficinas y data centers para expansión." },
+      Cable: { icono: '<svg viewBox="0 0 100 100"><path d="M20,50 Q40,30 60,50 Q80,30 100,50" fill="none" stroke="#10b981" stroke-width="12" stroke-linecap="round"/><circle cx="20" cy="50" r="8" fill="#3b82f6"/><circle cx="100" cy="50" r="8" fill="#3b82f6"/><path d="M20,50 L100,50" fill="none" stroke="#ef4444" stroke-width="4" stroke-dasharray="5,5"/><rect x="45" y="45" width="10" height="10" fill="#f59e0b"/><path d="M30,55 L70,55" stroke="#93c5fd" stroke-width="3"/></svg>', titulo: "Cable UTP", definicion: "El cable UTP (Unshielded Twisted Pair) es un cable de par trenzado sin blindaje utilizado para transmisiones de datos en redes Ethernet.", funcion: "Conecta dispositivos en redes LAN con velocidades hasta 10Gbps (Cat6a). Económico, flexible y estándar en instalaciones de red. Colores de pares: azul, naranja, verde, marrón." },
+      AccessPoint: { icono: '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="none" stroke="#3b82f6" stroke-width="8"/><path d="M50,20 L50,80 M20,50 L80,50" stroke="#ef4444" stroke-width="6"/><circle cx="50" cy="50" r="10" fill="#93c5fd"/><path d="M50,10 A40,40 0 0,1 90,50 A40,40 0 0,1 50,90 A40,40 0 0,1 10,50 A40,40 0 0,1 50,10" fill="none" stroke="#10b981" stroke-width="4"/><path d="M50,5 A45,45 0 0,1 95,50 A45,45 0 0,1 50,95 A45,45 0 0,1 5,50 A45,45 0 0,1 50,5" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="5,5"/><path d="M50,0 A50,50 0 0,1 100,50 A50,50 0 0,1 50,100 A50,50 0 0,1 0,50 A50,50 0 0,1 50,0" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="3,3"/></svg>', titulo: "Access Point WiFi", definicion: "El Access Point (AP) es un dispositivo que crea un punto de acceso inalámbrico a una red, extendiendo la cobertura WiFi.", funcion: "Conecta dispositivos móviles sin cables, soporta estándares como WiFi 6 para alta velocidad. Útil en hogares, oficinas y espacios públicos para cobertura uniforme." },
+      Servidor: { icono: '<svg viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="10" fill="none" stroke="#3b82f6" stroke-width="8"/><rect x="25" y="30" width="50" height="8" fill="#f59e0b"/><rect x="25" y="45" width="50" height="8" fill="#f59e0b"/><rect x="25" y="60" width="50" height="8" fill="#f59e0b"/><circle cx="78" cy="78" r="6" fill="#ef4444"/><path d="M40,85 L60,85" stroke="#10b981" stroke-width="5"/><rect x="30" y="70" width="40" height="5" fill="#93c5fd"/><circle cx="50" cy="78" r="4" fill="#ef4444"/></svg>', titulo: "Servidor", definicion: "Un servidor es un computador potente diseñado para proporcionar servicios, datos o recursos a otros dispositivos en una red.", funcion: "Almacena y gestiona bases de datos, sitios web, emails y archivos compartidos. Tipos: web, file, database. Crucial para cloud computing y operaciones empresariales 24/7." }
+    };
+
+    // Modal
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => {
+        const c = componentes[card.dataset.name];
+        document.getElementById('modal-titulo').textContent = c.titulo;
+        document.getElementById('modal-definicion').textContent = c.definicion;
+        document.getElementById('modal-funcion').textContent = c.funcion;
+        document.getElementById('modal-icon').innerHTML = c.icono;
+        document.getElementById('modal').style.display = 'flex';
+      });
+    });
+
+    document.querySelector('.close').onclick = () => document.getElementById('modal').style.display = 'none';
+    window.onclick = e => { if (e.target === document.getElementById('modal')) document.getElementById('modal').style.display = 'none'; };
+
+    // Juego
+    const nombres = Object.keys(componentes);
+    let actual = "", aciertos = 0, total = 0;
+
+    function nuevaRonda() {
+      if (total >= 12) {
+        document.getElementById('resultado-juego').innerHTML = `<div style="color:#10b981;font-size:2.8rem;">¡EXCELENTE! Terminaste con ${aciertos}/12 aciertos</div>`;
+        return;
+      }
+      actual = nombres[Math.floor(Math.random() * nombres.length)];
+      document.getElementById('icono-juego').innerHTML = componentes[actual].icono;
+
+      const opciones = [actual];
+      while (opciones.length < 4) {
+        const r = nombres[Math.floor(Math.random() * nombres.length)];
+        if (!opciones.includes(r)) opciones.push(r);
+      }
+      opciones.sort(() => Math.random() - 0.5);
+
+      const cont = document.getElementById('opciones');
+      cont.innerHTML = '';
+      opciones.forEach(op => {
+        const btn = document.createElement('div');
+        btn.className = 'opcion';
+        btn.textContent = componentes[op].titulo.split(' - ')[0] || componentes[op].titulo;
+        btn.onclick = () => {
+          document.querySelectorAll('.opcion').forEach(b => b.style.pointerEvents = 'none');
+          if (op === actual) { btn.classList.add('correcto'); aciertos++; }
+          else btn.classList.add('incorrecto');
+          total++;
+          setTimeout(nuevaRonda, 2200);
+        };
+        cont.appendChild(btn);
+      });
+    }
+    nuevaRonda();
+
+    // Quiz
+    const quizQuestions = [
+      { question: "¿Qué es la CPU?", options: ["El cerebro del computador", "Almacenamiento permanente", "Pantalla", "Dispositivo de entrada"], correct: 0 },
+      { question: "¿Para qué sirve la RAM?", options: ["Ejecutar programas rápidamente", "Guardar archivos permanentemente", "Mostrar imágenes", "Conectar a internet"], correct: 0 },
+      { question: "¿Qué almacena el Disco Duro?", options: ["Datos permanentes", "Datos temporales", "Instrucciones de procesamiento", "Señales WiFi"], correct: 0 },
+      { question: "¿El teclado es un dispositivo de...?", options: ["Entrada", "Salida", "Almacenamiento", "Red"], correct: 0 },
+      { question: "¿Qué muestra el Monitor?", options: ["Información visual", "Datos temporales", "Archivos permanentes", "Señales de red"], correct: 0 },
+      { question: "¿Windows es un...?", options: ["Sistema operativo", "Hardware", "Cable", "Servidor"], correct: 0 },
+      { question: "¿Linux es conocido por ser...?", options: ["Gratuito y seguro", "Pagado y cerrado", "Solo para gaming", "Un navegador"], correct: 0 },
+      { question: "¿Microsoft Word sirve para...?", options: ["Editar documentos", "Navegar internet", "Procesar imágenes", "Conectar redes"], correct: 0 },
+      { question: "¿Un navegador web permite...?", options: ["Acceder a internet", "Almacenar datos", "Procesar cálculos", "Mostrar hardware"], correct: 0 },
+      { question: "¿El Router conecta...?", options: ["Red local a internet", "Pantallas", "Memorias", "Teclados"], correct: 0 },
+      { question: "¿El Switch conecta dispositivos en...?", options: ["Red local", "Internet global", "Almacenamiento", "Procesamiento"], correct: 0 },
+      { question: "¿El Cable UTP se usa para...?", options: ["Conexiones Ethernet", "WiFi", "Pantallas", "Sonido"], correct: 0 },
+      { question: "¿Access Point proporciona...?", options: ["WiFi inalámbrico", "Almacenamiento", "Procesamiento", "Entrada"], correct: 0 },
+      { question: "¿Un Servidor ofrece...?", options: ["Servicios en red", "Entrada local", "Visualización", "Memoria temporal"], correct: 0 }
+    ];
+
+    let quizName = '';
+    let quizScore = 0;
+    let quizCurrent = 0;
+
+    function startQuiz() {
+      quizName = document.getElementById('quiz-name').value.trim();
+      if (!quizName) return alert('Por favor, ingresa tu nombre');
+      document.getElementById('quiz-start').style.display = 'none';
+      document.getElementById('quiz-questions').style.display = 'block';
+      quizScore = 0;
+      quizCurrent = 0;
+      shuffle(quizQuestions);
+      showQuestion();
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function showQuestion() {
+      const cont = document.getElementById('quiz-questions');
+      cont.innerHTML = '';
+      if (quizCurrent >= 10) {
+        showQuizResult();
+        return;
+      }
+      const q = quizQuestions[quizCurrent];
+      const div = document.createElement('div');
+      div.className = 'quiz-question';
+      div.innerHTML = `<p>${quizCurrent + 1}. ${q.question}</p>`;
+      shuffle(q.options);
+      q.options.forEach((op, i) => {
+        const btn = document.createElement('div');
+        btn.className = 'quiz-option';
+        btn.textContent = op;
+        btn.onclick = () => checkAnswer(i, q.options.indexOf(q.options.find((_, idx) => idx === q.correct)));
+        div.appendChild(btn);
+      });
+      cont.appendChild(div);
+    }
+
+    function checkAnswer(selected, correct) {
+      if (selected === correct) quizScore++;
+      quizCurrent++;
+      showQuestion();
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-questions').style.display = 'none';
+      const res = document.getElementById('quiz-result');
+      res.style.display = 'block';
+      let message = '';
+      let icon = '';
+      const total = 10;
+      if (quizScore === total) {
+        message = '¡Felicidades, ' + quizName + '! Completaste todos correctamente. ¡Eres un experto!';
+        icon = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#ffd700"/><path d="M50,10 L60,40 L90,40 L65,60 L75,90 L50,70 L25,90 L35,60 L10,40 L40,40 Z" fill="#ffffff"/></svg>';
+      } else if (quizScore > total / 2) {
+        message = '¡Bien hecho, ' + quizName + '! Obtuviste ' + quizScore + '/' + total + '. Sigue mejorando para ser un experto.';
+        icon = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#10b981"/><path d="M30,50 A20,20 0 0,1 70,50" stroke="#ffffff" stroke-width="10" fill="none"/><circle cx="35" cy="40" r="5" fill="#ffffff"/><circle cx="65" cy="40" r="5" fill="#ffffff"/></svg>';
+      } else {
+        message = '¡No te desanimes, ' + quizName + '! Obtuviste ' + quizScore + '/' + total + '. Mejora para la próxima vez.';
+        icon = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#ef4444"/><path d="M30,60 A20,20 0 0,0 70,60" stroke="#ffffff" stroke-width="10" fill="none"/><circle cx="35" cy="40" r="5" fill="#ffffff"/><circle cx="65" cy="40" r="5" fill="#ffffff"/></svg>';
+      }
+      res.innerHTML = icon + '<p>' + message + '</p>';
+    }
+
+    document.getElementById('quiz').style.display = 'block'; // Muestra la sección de quiz por defecto si quieres
+  </script>
+</body>
+</html>
